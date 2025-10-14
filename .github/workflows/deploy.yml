@@ -31,7 +31,7 @@ jobs:
         with:
           context: ./server                # thư mục chứa Dockerfile backend
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/server:latest
 
       # 5. Build & Push Frontend image
       - name: Build & Push Frontend
@@ -39,7 +39,7 @@ jobs:
         with:
           context: ./client                # thư mục chứa Dockerfile frontend
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/client:latest
 
       # 6. Deploy lên server qua SSH
       - name: Deploy to Server
