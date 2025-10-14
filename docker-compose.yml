@@ -2,19 +2,24 @@ version: "3.9"
 
 services:
   backend:
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     container_name: backend
     ports:
-      - "3000:3000"
+      - "3000:3000"     # port host:container
     restart: always
     env_file:
       - ./server/.env 
 
   frontend:
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "5173:5173"       # <— đây là phần bạn hỏi: đổi cổng 8080 để tránh trùng
+      - "5173:80"       # nếu build production (nginx)
+      # hoặc "5173:5173" nếu chạy dev server (vite)
     depends_on:
       - backend
     restart: always
