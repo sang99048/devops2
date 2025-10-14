@@ -19,6 +19,7 @@ const App = () => {
         <Route path="/list" element={<ListInvoice onViewBill={handleViewBill} />} />
         <Route path="/bill/:id" element={<BillDetail />} />
         <Route path="/edit/:id" element={<UpdateInvoice />} />
+        {/* <h1></h1> */}
       </Routes>
     </Router>
   )
