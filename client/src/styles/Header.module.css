@@ -1,0 +1,31 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+.header{
+    background-color: #dfe4e1;
+    color: rgb(78, 78, 78);
+    padding: 1px;
+    text-align: center;
+    font-size: 16px;
+}
+.buttonsHeader{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 7px;
+}
+.buttonsHeader button{
+    padding: 7px 15px;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid #9b9b9b;
+    border-radius: 5px;
+}
+.buttonsHeader button:hover{
+    background-color: #f0f0f0;
+}
+.buttonsHeader button:active{
+    background-color: #e0e0e0;
+}
