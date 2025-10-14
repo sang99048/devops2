@@ -3,47 +3,47 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # chạy khi push lên nhánh main
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Lấy code về runner
+      # 1. Lấy code từ repo
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      # 2️⃣ Cài đặt Docker Buildx
+      # 2. Cài Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 3️⃣ Đăng nhập Docker Hub
+      # 3. Đăng nhập Docker Hub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 4️⃣ Build & Push Backend image
+      # 🧱 4. Build & Push Backend
       - name: Build & Push Backend
         uses: docker/build-push-action@v6
         with:
-          context: ./server                 # ✅ đúng đường dẫn tương đối
-          file: ./server/Dockerfile         # ✅ chỉ rõ Dockerfile
+          context: ./server
+          file: ./server/Dockerfile         # ✅ quan trọng: đường dẫn tuyệt đối
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/server:latest
 
-      # 5️⃣ Build & Push Frontend image
+      # 🧱 5. Build & Push Frontend
       - name: Build & Push Frontend
         uses: docker/build-push-action@v6
         with:
-          context: ./client                 # ✅ đúng đường dẫn tương đối
-          file: ./client/Dockerfile         # ✅ chỉ rõ Dockerfile
+          context: ./client
+          file: ./client/Dockerfile         # ✅ quan trọng: đường dẫn tuyệt đối
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/client:latest
 
-      # 6️⃣ Deploy lên server qua SSH
+      # 6. Deploy qua SSH
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -52,15 +52,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            # Ghi nội dung docker-compose.yml từ GitHub Secrets (nếu bạn lưu trong đó)
             echo "${{ secrets.DOCKER_COMPOSE_FILE }}" > docker-compose.yml
-
-            # Đăng nhập Docker Hub
             docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
-
-            # Kéo image mới nhất và khởi động lại container
             docker-compose pull
             docker-compose up -d --remove-orphans
-
-            # Dọn dẹp image cũ
             docker image prune -f
