@@ -2,24 +2,32 @@ version: "3.9"
 
 services:
   backend:
+    container_name: backend
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: backend
     ports:
-      - "3000:3000"     # port host:container
-    restart: always
+      - "3000:3000"
     env_file:
-      - ./server/.env 
+      - ./server/.env
+    restart: always
+    networks:
+      - app-network
 
   frontend:
+    container_name: frontend
     build:
       context: ./client
       dockerfile: Dockerfile
-    container_name: frontend
     ports:
-      - "5173:80"       # nếu build production (nginx)
-      # hoặc "5173:5173" nếu chạy dev server (vite)
+      - "5173:80"          # Production mode
+      # - "5173:5173"      # Dev mode
     depends_on:
       - backend
     restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
