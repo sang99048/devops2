@@ -29,7 +29,7 @@ jobs:
       - name: Build & Push Backend
         uses: docker/build-push-action@v6
         with:
-          context: /server                # thư mục chứa Dockerfile backend
+          context: ./server                # thư mục chứa Dockerfile backend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/server:latest
 
@@ -37,7 +37,7 @@ jobs:
       - name: Build & Push Frontend
         uses: docker/build-push-action@v6
         with:
-          context: /client                # thư mục chứa Dockerfile frontend
+          context: ./client                # thư mục chứa Dockerfile frontend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/client:latest
 
