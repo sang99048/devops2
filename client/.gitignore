@@ -1,5 +1,4 @@
-# Logs
-Dockerfile
+
 logs
 *.log
 npm-debug.log*
