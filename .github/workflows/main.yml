@@ -24,17 +24,15 @@ jobs:
 
       # 🧱 Build Backend
       - name: Build & Push Backend
-        working-directory: ./server        # ✅ chuyển thư mục làm việc
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/server:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/server:latest -f ./server/Dockerfile ./server
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker push ${{ secrets.DOCKER_USERNAME }}/server:latest
 
-      # 🧱 Build 
+      # 🧱 Build Frontend
       - name: Build & Push Frontend
-        working-directory: ./client        # ✅ chuyển thư mục làm việc
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/client:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/client:latest -f ./client/Dockerfile ./client
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker push ${{ secrets.DOCKER_USERNAME }}/client:latest
 
